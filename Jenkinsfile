@@ -43,11 +43,13 @@ pipeline {
                             {
                                 "pattern": "(*)-(*).tar",
                                 "target": "generic-local/{1}-{2}.tar",
-                                "props": "poop.dirty = bad; poop.stable = false",
+                                "props": "status.type=DEV;status.stable=false",
                                 "recursive": "false"
                             }
                         ]
                     }"""
+
+                    // without spaces in PROPS
 
                     // Upload files to Artifactory:
                     def buildInfo = Artifactory.newBuildInfo()
