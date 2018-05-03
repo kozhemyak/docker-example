@@ -65,7 +65,7 @@ pipeline {
                     // buildInfo.env.collect() # To collect environment variables at any point in the script
 
 
-                    buildInfo.append(artifactory.upload(uploadSpec))
+                    buildInfo.append artifactory.upload(uploadSpec) // WRONG
 
                     // Merge the local download and upload build-info instances:
                     //buildInfo1.append buildInfo2
@@ -73,11 +73,11 @@ pipeline {
                     // Publish the merged build-info to Artifactory
                     artifactory.publishBuildInfo(buildInfo)
 
-                    def scanConfig = [
-                        'buildName'      : buildInfo.name,
-                        'buildNumber'    : buildInfo.number,
-                        'failBuild'      : false
-                    ]
+                    //def scanConfig = [
+                    //    'buildName'      : buildInfo.name,
+                    //    'buildNumber'    : buildInfo.number,
+                    //    'failBuild'      : false
+                    //]
 
                     //def scanResult = artifactory.xrayScan scanConfig
 
