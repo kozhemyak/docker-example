@@ -17,20 +17,20 @@ pipeline {
             steps {
                 echo "---------------------------------"
 
-                sh "rm -rf *-*.tar"
+                sh "rm -rf *-*.tgz" // For quick test
 
-                sh "tar -cf somearchive-${BUILD_NUMBER}.tar ./src/"
+                //sh "tar -cf somearchive-${BUILD_NUMBER}.tar ./src/"
 
                 echo "---------------------------------"
             }
         }
 
         //
-            //ls
-            //docker info
-            //docker build -t katacoda/jenkins-demo:${BUILD_NUMBER} .
-            //docker tag katacoda/jenkins-demo:${BUILD_NUMBER} katacoda/jenkins-demo:latest
-            //docker images
+        //ls
+        //docker info
+        //docker build -t katacoda/jenkins-demo:${BUILD_NUMBER} .
+        //docker tag katacoda/jenkins-demo:${BUILD_NUMBER} katacoda/jenkins-demo:latest
+        //docker images
 
         stage('Push to Artifactory (Script)'){
             steps {
@@ -41,8 +41,8 @@ pipeline {
                     def uploadSpec = """{
                         "files": [
                             {
-                                "pattern": "(*)-(*).tar",
-                                "target": "generic-local/{1}-{2}.tar",
+                                "pattern": "(*).tgz",
+                                "target": "helm/{1}.tgz",
                                 "props": "status.type=DEV;status.stable=false",
                                 "recursive": "false"
                             }
@@ -64,8 +64,7 @@ pipeline {
 
                     // buildInfo.env.collect() # To collect environment variables at any point in the script
 
-
-                    buildInfo.append artifactory.upload(uploadSpec) // WRONG
+                    buildInfo.append artifactory.upload(uploadSpec) // SOmething WRONG
 
                     // Merge the local download and upload build-info instances:
                     //buildInfo1.append buildInfo2
