@@ -17,7 +17,7 @@ pipeline {
             steps {
                 echo "---------------------------------"
 
-                sh "rm -rf *-*.tgz" // For quick test
+                //sh "rm -rf *-*.tgz" // For quick test
 
                 //sh "tar -cf somearchive-${BUILD_NUMBER}.tar ./src/"
 
