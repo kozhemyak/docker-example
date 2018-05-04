@@ -16,11 +16,13 @@ pipeline {
         stage('Create Fake Archive'){
             steps {
                 echo "---------------------------------"
+                script {
+                    dir ('src') {
 
-                //sh "rm -rf *-*.tgz" // For quick test
-
-                //sh "tar -cf somearchive-${BUILD_NUMBER}.tar ./src/"
-
+                        def customImage = docker.build("my-registry/my-image:${env.BUILD_ID}")
+                        
+                    }
+                }
                 echo "---------------------------------"
             }
         }
@@ -46,13 +48,12 @@ pipeline {
                             }
                         ]
                     }"""
-                    // without spaces in PROPS
-                    // Upload files to Artifactory:
                     def buildInfo = Artifactory.newBuildInfo()
                     buildInfo.env.capture = true
                     buildInfo.env.filter.addExclude("*FREAK_TEST*")
-                    artifactory.upload spec: uploadSpec, buildInfo: buildInfo
-                    artifactory.publishBuildInfo buildInfo
+
+                    //artifactory.upload spec: uploadSpec, buildInfo: buildInfo
+                    //artifactory.publishBuildInfo buildInfo
 
                 }
             }
