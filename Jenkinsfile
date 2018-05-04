@@ -35,52 +35,25 @@ pipeline {
         stage('Push to Artifactory (Script)'){
             steps {
                 script{
-
                     def artifactory = Artifactory.server('Docker-Example-Registry-01')
-
                     def uploadSpec = """{
                         "files": [
                             {
-                                "pattern": "(*).tgz",
-                                "target": "helm/{1}.tgz",
-                                "props": "status.type=DEV;status.stable=false",
+                                "pattern": "*.tgz",
+                                "target": "helm/",
+                                "props": "status=DEV;status.stable=false",
                                 "recursive": "false"
                             }
                         ]
                     }"""
-
                     // without spaces in PROPS
-
                     // Upload files to Artifactory:
                     def buildInfo = Artifactory.newBuildInfo()
-
                     buildInfo.env.capture = true
                     buildInfo.env.filter.addExclude("*FREAK_TEST*")
+                    artifactory.upload spec: uploadSpec, buildInfo: buildInfo
+                    artifactory.publishBuildInfo buildInfo
 
-
-                    // test
-
-                    //buildInfo.type = 'stable'
-
-                    // buildInfo.env.collect() # To collect environment variables at any point in the script
-
-                    buildInfo.append artifactory.upload(uploadSpec) // SOmething WRONG
-
-                    // Merge the local download and upload build-info instances:
-                    //buildInfo1.append buildInfo2
-
-                    // Publish the merged build-info to Artifactory
-                    artifactory.publishBuildInfo(buildInfo)
-
-                    //def scanConfig = [
-                    //    'buildName'      : buildInfo.name,
-                    //    'buildNumber'    : buildInfo.number,
-                    //    'failBuild'      : false
-                    //]
-
-                    //def scanResult = artifactory.xrayScan scanConfig
-
-                    //echo scanResult as String
                 }
             }
         }
