@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    environment {
+        sonarCreds = "-Dsonar.host.url=$SONARQUBE_HOST -Dsonar.login=$SONARQUBE_LOGIN"
+        dockerImageName = "$dockerImagePrefix${PROJECT}"
+        dockerImageTag = ""
+        currentChartVersion = ""
+        updatedChartVersion = ""
+        currentChartRevision = ""
+    }
+
+    stages {
+        // Checkout for test from general repo
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/kozhemyak/docker-example.git'
+            }
+        }
+
+        
+    }
+}
+
+
